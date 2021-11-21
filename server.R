@@ -17,6 +17,7 @@ library(tibble)
 library(stringr)
 library(jsonlite)
 library(lubridate)
+library(dplyr)
 
 server <- function(input, output, session){
 ##look/find at sentators @'s
@@ -39,10 +40,18 @@ colnames(politicans.data) <- c("state", "member", "name", "wesbite", "party", "t
                                "twitterLink", "instagram", "instagramLink", "facebook", "facebookLink")
 
 
-sentators.data <- politicans.data %>% subset(member == "U.S. Senator") %>% select(state, member, name, party,
+senators.data <- politicans.data %>% subset(member == "U.S. Senator") %>% select(state, member, name, party,
                                                                                   twitterHandle)
 
-class(sentators.data)
+output$senators <- renderUI({
+  selectInput("Choosing variables",
+              label = "Choose a U.S Senator from the list",
+              selected = senators.data$name,
+              choices = senators.data$name
+  )
+  
+})
+#class(sentators.data)
 
 
 ##load tweets
@@ -54,12 +63,12 @@ Sys.setenv(access_secret = creds$secret)
 
 
 ##tweets
-tweets <- vector()
-for(i in 1:sentators.data$twitterHandle){
-  tweets <- searchTwitter('COVID', 'COVID19', 'COIVD-19', 'virus', 'vaccines', 'vaccine',
-                since = '2020-01-01', until = '2021-01-01', include_rts = false,) 
+#tweets <- vector()
+#for(i in 1:length(senators.data$twitterHandle)){
+ # tweets <- searchTwitter('COVID', 'COVID19', 'COIVD-19', 'virus', 'vaccines', 'vaccine',
+  #              since = '2020-01-01', until = '2021-01-01', include_rts = false,) 
   #collecting for only a year
    
-}
+#}
 
 }
