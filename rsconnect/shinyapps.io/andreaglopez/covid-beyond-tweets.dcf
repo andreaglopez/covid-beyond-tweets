@@ -1,0 +1,11 @@
+name: covid-beyond-tweets
+title:
+username:
+account: andreaglopez
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5173320
+bundleId: 5275700
+url: https://andreaglopez.shinyapps.io/covid-beyond-tweets/
+when: 1637479370.25862
+lastSyncTime: 1637479370.25862
