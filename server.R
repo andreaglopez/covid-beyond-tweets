@@ -3,7 +3,6 @@
 #install.packages('rsconnect')
 
 ##main code
-
 library(rsconnect)
 library(shiny)
 
@@ -42,15 +41,14 @@ colnames(politicans.data) <- c("state", "member", "name", "wesbite", "party", "t
 
 senators.data <- politicans.data %>% subset(member == "U.S. Senator") %>% select(state, member, name, party,
                                                                                   twitterHandle)
+senators.data$twitterHandle <- gsub("@", "", as.character(senators.data$twitterHandle))
 
 output$senators <- renderUI({
   selectInput("Choosing variables",
               label = "Choose a U.S Senator from the list",
               selected = senators.data$name,
-              choices = senators.data$name
-  )
-  
-})
+              choices = senators.data$name)
+  })
 #class(sentators.data)
 
 
@@ -63,9 +61,22 @@ Sys.setenv(access_secret = creds$secret)
 
 
 ##tweets
+# this is looking through a specific amount of tweets not through year, and
+# lets assume this user is active, most tweets i'm looking for are not within the amount
+# i set
+
+# if Iuse the searchTwitter function, I run into the issue that it looking in general
+# and not at a certain user
+
+
 #tweets <- vector()
 #for(i in 1:length(senators.data$twitterHandle)){
- # tweets <- searchTwitter('COVID', 'COVID19', 'COIVD-19', 'virus', 'vaccines', 'vaccine',
+ #df <- get_timeline(i, n = 1000)
+ #tweets <- rbind(tweets,df)
+#}
+#if I include the code above (72-76) the input list won't appear
+  
+  # <- searchTwitter('COVID', 'COVID19', 'COIVD-19', 'virus', 'vaccines', 'vaccine',
   #              since = '2020-01-01', until = '2021-01-01', include_rts = false,) 
   #collecting for only a year
    
