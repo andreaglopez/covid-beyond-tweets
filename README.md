@@ -7,9 +7,11 @@ I will be collecting tweets from Politicians (senators) from 2020 to explore the
 
 ***
 
-** It appears that some senators twitter handles are not right and no information have been collected for them
+ **It appears that some senators twitter handles are not right and no information have been collected for them****
 
-Goals: 
+
+
+## Goals: 
 
 * Learn how to use Twitter API
 * 
