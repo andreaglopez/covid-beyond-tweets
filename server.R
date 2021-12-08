@@ -8,10 +8,9 @@ library(shiny)
 
 #install.packages('rtweet')
 #install.packages("twitteR")
-library(twitteR)
-library(rtweet)
-library(rvest)
+
 library(tidyverse)
+library(ggplot2)
 library(tibble)
 library(stringr)
 library(jsonlite)
@@ -20,66 +19,35 @@ library(dplyr)
 
 server <- function(input, output, session){
 ##look/find at sentators @'s
-url <- "https://triagecancer.org/congressional-social-media"
-thread <- read_html(url)
 
-class(thread)
-print(thread)
-
-politicans.data <- thread %>% 
-  html_nodes(xpath = '//*[@id="footable_16836"]') %>% html_table()
-
-
-politicans.data <- politicans.data[[1]] 
-##maybe I'll do more with this !
-
-class(politicans.data[2])
-
-colnames(politicans.data) <- c("state", "member", "name", "wesbite", "party", "twitterHandle", 
-                               "twitterLink", "instagram", "instagramLink", "facebook", "facebookLink")
-
-
-senators.data <- politicans.data %>% subset(member == "U.S. Senator") %>% select(state, member, name, party,
-                                                                                  twitterHandle)
-senators.data$twitterHandle <- gsub("@", "", as.character(senators.data$twitterHandle))
-
-output$senators <- renderUI({
-  selectInput("Choosing variables",
+senators <- read.csv("senators.csv")
+output$senator <- renderUI({
+  selectInput("variablex",
+              #inputID = "senator",
               label = "Choose a U.S Senator from the list",
-              selected = senators.data$name,
-              choices = senators.data$name)
+              selected = senators$name,
+              choices = senators$name)
   })
-#class(sentators.data)
 
-
-##load tweets
-creds <- read_json("twitterCreds.json")
-
-Sys.setenv(BEARER_TOKEN = creds$bearer)
-Sys.setenv( access_token= creds$id)
-Sys.setenv(access_secret = creds$secret)
-
-
-##tweets
-# this is looking through a specific amount of tweets not through year, and
-# lets assume this user is active, most tweets i'm looking for are not within the amount
-# i set
-
-# if Iuse the searchTwitter function, I run into the issue that it looking in general
-# and not at a certain user
-
-
-#tweets <- vector()
-#for(i in 1:length(senators.data$twitterHandle)){
- #df <- get_timeline(i, n = 1000)
- #tweets <- rbind(tweets,df)
-#}
-#if I include the code above (72-76) the input list won't appear
+  senTweets <- read.csv("person.year.count.csv")
   
-  # <- searchTwitter('COVID', 'COVID19', 'COIVD-19', 'virus', 'vaccines', 'vaccine',
-  #              since = '2020-01-01', until = '2021-01-01', include_rts = false,) 
-  #collecting for only a year
-   
-#}
+  person <- reactive({
+    #req(variablex)
+    df <- senTweets %>% #filter(input$variablex %in% input$variablex) %>%
+      group_by(input$variablex, year) %>% 
+      top_n(input$a, n) %>%
+      ungroup() %>%
+      arrange(word, -n)
+  })
 
+  output$plot <- renderPlot({
+    person () %>%  mutate(word = reorder(word, n))
+      ggplot(data = person(), aes(word, n, fill = factor(year))) +
+      geom_col(show.legend = FALSE) +
+      facet_wrap(~ year, scales = "free") + scale_fill_viridis_d() +
+      coord_flip() + labs(y="Word frequency", x="Term", title = paste("Top words used in 2020"))
+    
+  })
+  
 }
+
