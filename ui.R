@@ -43,7 +43,7 @@ dashboardBody(
       
       mainPanel(
         plotOutput("plot")),
-        dataTableOutput("rates")
+        dataTableOutput("x")
         ),
     
     

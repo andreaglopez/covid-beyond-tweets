@@ -5,7 +5,6 @@
 ##main code
 library(rsconnect)
 library(shiny)
-library(DT)
 
 #install.packages('rtweet')
 #install.packages("twitteR")
@@ -55,9 +54,10 @@ senTweets <- read.csv("person.year.count.csv")
     
   })
   
-  states <- read.csv("statesVaccination.csv")
-  output$rates <- renderDataTable({
-    states
+  statesUS <- read.csv("statesVaccination.csv")
+  
+  output$x <- renderDataTable({
+    statesUS
   })
 
 
