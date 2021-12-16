@@ -23,7 +23,7 @@ ui <- dashboardPage(
     )
   ),
   
-  dashboardBody(
+dashboardBody(
   tabItems(
     tabItem(
       tabName = "Main",
@@ -41,15 +41,17 @@ ui <- dashboardPage(
           ),
         ),
       
-      
-    mainPanel(
-      plotOutput("plot")
-    )
-     
-     
-    ),
+      mainPanel(
+        plotOutput("plot")),
+        dataTableOutput("rates")
+        ),
+    
+    
     tabItem(tabName = "ReadMe", 
             includeMarkdown("README.md"))
-    ),
+    
+   
+    
+    )
   )
 )

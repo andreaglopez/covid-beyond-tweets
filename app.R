@@ -39,6 +39,9 @@ colnames(politicans.data) <- c("state", "member", "name", "wesbite", "party", "t
 senators.data <- politicans.data %>% subset(member == "U.S. Senator") %>% select(state, member, name, party,
                                                                                    twitterHandle)
 senators.data$twitterHandle <- gsub("@", "", as.character(senators.data$twitterHandle))
+senators.data$name <- gsub(" ", "", as.character(senators.data$name))
+senators.data$name <- gsub(",", "", as.character(senators.data$name))
+parse(text = senators.data$name)
 
 write.csv(senators.data, file = "senators.csv")
   
