@@ -21,6 +21,6 @@ My goal was to see if there top words (positive/negative) had any relationship t
 ## Goals: 
 
 * Learn how to use Twitter API
-* Web scrapping
-  * List of senators I pulled tweets from, [This is the link I used to web scrape the twitter handles] (https://triagecancer.org/congressional-social-media)
 * Learn to use r Shiny
+* Web scrapping
+  * List of senators I pulled tweets from, [This is the link I used to web scrape the twitter handles (https://triagecancer.org/congressional-social-media)
